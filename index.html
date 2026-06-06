@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<script>document.documentElement.className="js";</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Device Security Lab</title>
+<meta name="description" content="デバイスセキュリティを、誰もが使えるかたちに。Device Security Lab — 個人事業。SBOM 確認ツール SBON の開発と、毎日のセキュリティニュース発信。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#0c0f14;
+  --bg-2:#10141b;
+  --card:#141921;
+  --line:rgba(150,168,196,.14);
+  --line-2:rgba(150,168,196,.26);
+  --text:#eaeef4;
+  --muted:#9aa6b8;
+  --muted-2:#69748a;
+  --red:#e5242b;
+  --blue:#3f9be6;
+  --maxw:1080px;
+  --jp:"Noto Sans JP",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--jp);background:var(--bg);color:var(--text);line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-2)}
+h2.title{font-size:clamp(24px,3.2vw,34px);font-weight:800;letter-spacing:.01em;line-height:1.3;margin-top:14px}
+.lead{color:var(--muted);max-width:62ch;margin-top:16px;font-size:15.5px}
+
+.btn{display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:14px;padding:12px 20px;border-radius:8px;border:1px solid transparent;cursor:pointer;transition:.18s ease;white-space:nowrap}
+.btn svg{width:16px;height:16px}
+.btn-red{background:var(--red);color:#fff}
+.btn-red:hover{background:#f23139}
+.btn-blue{background:var(--blue);color:#06121d}
+.btn-blue:hover{background:#56a9ec}
+.btn-line{border-color:var(--line-2);color:var(--text)}
+.btn-line:hover{border-color:var(--text);background:rgba(255,255,255,.03)}
+
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* header */
+header{position:fixed;top:0;left:0;right:0;z-index:50;transition:.3s}
+header.scrolled{background:rgba(12,15,20,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{width:34px;height:34px;border-radius:50%}
+.brand b{font-weight:800;font-size:16px;letter-spacing:.01em;white-space:nowrap}
+.menu{display:flex;align-items:center;gap:26px}
+.menu a{font-size:14px;color:var(--muted);transition:.18s}
+.menu a:hover{color:#fff}
+.menu-btn{display:none;background:none;border:1px solid var(--line-2);color:#fff;width:40px;height:40px;border-radius:8px;font-size:18px;cursor:pointer}
+
+/* hero — operator + mission */
+.hero{padding:150px 0 96px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--line)}
+.hero-bg{position:absolute;inset:0;background-image:radial-gradient(rgba(120,150,190,.13) 1px,transparent 1.4px);background-size:24px 24px;-webkit-mask-image:radial-gradient(120% 80% at 70% 25%,#000 20%,transparent 72%);mask-image:radial-gradient(120% 80% at 70% 25%,#000 20%,transparent 72%);opacity:.5;pointer-events:none}
+html.js .hero-bg{animation:dotDrift 8s ease-in-out infinite}
+@keyframes dotDrift{0%,100%{opacity:.4}50%{opacity:.62}}
+.hero-scan{position:absolute;left:0;right:0;top:0;height:1px;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(63,155,230,.55),rgba(63,155,230,.15),transparent);opacity:0}
+html.js .hero-scan{animation:heroScan 9s linear infinite 1.2s}
+@keyframes heroScan{0%{top:10%;opacity:0}8%{opacity:1}50%{opacity:.9}92%{opacity:1}100%{top:88%;opacity:0}}
+.hero-scan.s2{background:linear-gradient(90deg,transparent,rgba(229,36,43,.4),transparent)}
+html.js .hero-scan.s2{animation:heroScan 11s linear infinite 5s}
+.hero-spark{position:absolute;width:4px;height:4px;border-radius:50%;background:var(--blue);box-shadow:0 0 10px 2px rgba(63,155,230,.7);opacity:0;pointer-events:none}
+html.js .hero-spark{animation:spark 4.5s ease-in-out infinite}
+.hero-spark.k1{top:24%;left:58%;animation-delay:.4s}
+.hero-spark.k2{top:62%;left:46%;background:var(--red);box-shadow:0 0 10px 2px rgba(229,36,43,.6);animation-delay:2.1s}
+.hero-spark.k3{top:38%;left:80%;animation-delay:3.3s}
+@keyframes spark{0%,100%{opacity:0;transform:scale(.5)}20%{opacity:.9;transform:scale(1)}40%{opacity:0;transform:scale(.6)}}
+.hero-glow{position:absolute;top:-120px;right:-80px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(63,155,230,.16),transparent 62%);pointer-events:none}
+.hero-grid{position:relative;display:grid;grid-template-columns:1.12fr .88fr;gap:54px;align-items:center}
+.hero .kicker{color:var(--blue)}
+.hero h1{font-size:clamp(30px,4.3vw,48px);font-weight:800;line-height:1.24;letter-spacing:.005em;margin-top:18px}
+.hero h1 .a{color:var(--blue)}
+.hero h1 .l{display:block;white-space:nowrap}
+.hero p{color:var(--muted);font-size:clamp(15px,1.5vw,16.5px);margin-top:24px;max-width:46ch}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+.hero-by{display:flex;align-items:center;gap:11px;margin-top:34px;font-family:var(--mono);font-size:11.5px;color:var(--muted-2);letter-spacing:.06em}
+.hero-by::before{content:"";width:7px;height:7px;border-radius:50%;background:#5fd698;box-shadow:0 0 8px 1px rgba(95,214,152,.7)}
+
+/* status panel */
+.panel{background:linear-gradient(165deg,#131c2a,#0d131d);border:1px solid var(--line-2);border-radius:16px;padding:8px;box-shadow:0 40px 90px -50px rgba(0,0,0,.95)}
+.panel-h{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 13px;border-bottom:1px solid var(--line)}
+.panel-h .pl{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.04em}
+.panel-h .pl img{width:18px;height:18px;border-radius:50%}
+.panel-h .live{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:#5fd698}
+.prow{display:flex;align-items:center;gap:14px;padding:16px;border-bottom:1px solid var(--line)}
+.prow:last-child{border-bottom:0}
+.prow .pi{width:38px;height:38px;border-radius:10px;flex:none;display:flex;align-items:center;justify-content:center}
+.prow .pi svg{width:20px;height:20px}
+.prow .pi.b{background:rgba(63,155,230,.13);color:var(--blue)}
+.prow .pi.r{background:rgba(229,36,43,.13);color:var(--red)}
+.prow .pi.g{background:rgba(150,168,196,.1);color:var(--muted)}
+.prow .pt{flex:1;min-width:0}
+.prow .pt b{font-size:13.5px;font-weight:700;display:block}
+.prow .pt span{font-size:11.5px;color:var(--muted-2)}
+.pstat{font-family:var(--mono);font-size:10.5px;font-weight:600;padding:4px 10px;border-radius:999px;white-space:nowrap}
+.pstat.on{background:rgba(95,214,152,.13);color:#5fd698}
+.pstat.up{background:rgba(63,155,230,.13);color:var(--blue)}
+.pstat.dev{background:rgba(150,168,196,.1);color:var(--muted)}
+
+/* section */
+section.block{padding:84px 0}
+.block.alt{background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+
+/* about */
+.about{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:start;margin-top:40px}
+.about-copy p{color:var(--muted);font-size:15.5px;margin-top:18px}.about-copy p:first-child{margin-top:0;font-size:17px;color:var(--text);font-weight:500;line-height:1.7}
+.about-copy strong{color:#fff;font-weight:700}
+.about-card{background:var(--card);border:1px solid var(--line-2);border-radius:16px;padding:28px}
+.about-card .bd{display:flex;align-items:center;gap:14px;padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:18px}
+.about-card .bd img{width:50px;height:50px;border-radius:50%}
+.about-card .bd b{font-size:17px;font-weight:800}.about-card .bd span{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--muted-2);margin-top:3px}
+.dl{display:grid;grid-template-columns:auto 1fr;gap:12px 18px}
+.dl dt{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--blue);padding-top:2px;white-space:nowrap}
+.dl dd{font-size:13.5px}
+
+/* mission band */
+.mission{background:linear-gradient(120deg,#121a26,#0e1420);border:1px solid var(--line-2);border-radius:18px;padding:48px 46px;margin-top:48px;text-align:center}
+.mission .kicker{color:var(--blue)}
+.mission h3{font-size:clamp(22px,3vw,32px);font-weight:800;line-height:1.45;margin-top:16px;max-width:24ch;margin-inline:auto}
+.mission h3 .a{color:var(--blue)}
+.mission h3.vh{max-width:none}
+.mission h3.vh .a{display:inline-block;margin-top:4px}
+.mission p{color:var(--muted);font-size:15px;margin-top:18px;max-width:54ch;margin-inline:auto}
+
+/* activities */
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:40px}
+.act{border:1px solid var(--line);border-radius:14px;background:var(--card);padding:30px;display:flex;flex-direction:column;transition:.2s}
+.act:hover{border-color:var(--line-2);transform:translateY(-3px)}
+.act .at{display:flex;align-items:center;justify-content:space-between}
+.act .ai{width:46px;height:46px;border-radius:11px;display:flex;align-items:center;justify-content:center}
+.act .ai svg{width:24px;height:24px}
+.act .ai.b{background:rgba(63,155,230,.12);color:var(--blue)}
+.act .ai.r{background:rgba(229,36,43,.12);color:var(--red)}
+.act .tagn{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--muted-2);border:1px solid var(--line);padding:4px 10px;border-radius:999px}
+.act h3{font-size:20px;font-weight:800;margin-top:20px}
+.act .role{font-family:var(--mono);font-size:11.5px;color:var(--blue);margin-top:7px;letter-spacing:.04em}
+.act>p{color:var(--muted);font-size:14px;margin-top:14px;line-height:1.7;flex:1}
+.act .links{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.act .links a{font-family:var(--mono);font-size:12px;color:var(--muted);border:1px solid var(--line-2);padding:7px 13px;border-radius:7px;transition:.18s}
+.act .links a:hover{color:#fff;border-color:var(--text)}
+
+/* daily channels mini */
+.chan{display:flex;gap:10px;margin-top:18px}
+.chan a{flex:1;display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:9px;padding:11px 13px;transition:.18s}
+.chan a:hover{border-color:var(--line-2);background:rgba(255,255,255,.02)}
+.chan a svg{width:18px;height:18px;flex:none}
+.chan a .yt{color:var(--red)}.chan a .nt{color:var(--blue)}
+.chan a b{font-size:13px;font-weight:700}.chan a span{display:block;font-family:var(--mono);font-size:10px;color:var(--muted-2)}
+
+/* contact */
+.contact{text-align:center;padding:92px 0;border-top:1px solid var(--line);background:var(--bg-2)}
+.contact h2{font-size:clamp(26px,3.6vw,40px);font-weight:800;line-height:1.3}
+.contact p{color:var(--muted);margin-top:16px;max-width:46ch;margin-inline:auto}
+.contact .links{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:32px}
+
+footer{border-top:1px solid var(--line);padding:40px 0 36px}
+.foot{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.foot-links{display:flex;gap:22px;flex-wrap:wrap}.foot-links a{font-size:13px;color:var(--muted);transition:.18s}.foot-links a:hover{color:var(--red)}
+.copy{font-family:var(--mono);font-size:11px;color:var(--muted-2);margin-top:24px;padding-top:22px;border-top:1px solid var(--line);text-align:center}
+
+@media(max-width:880px){
+  .menu{display:none}.menu-btn{display:flex;align-items:center;justify-content:center}
+  .hero-grid{grid-template-columns:1fr}.panel{order:-1}
+  .about{grid-template-columns:1fr;gap:30px}
+  .acts{grid-template-columns:1fr}
+  .mission{padding:38px 26px}
+}
+@media(max-width:560px){.wrap{padding:0 18px}.chan{flex-direction:column}.hero h1{font-size:clamp(26px,8vw,34px)}}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+
+/* hero entrance — only when JS active (html.js), so content is visible by default */
+@keyframes heroUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes panelIn{from{opacity:0;transform:translateY(24px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes glowIn{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:none}}
+@keyframes livePulse{0%,100%{opacity:1}50%{opacity:.35}}
+html.js .hero .anim{opacity:0;animation:heroUp .8s cubic-bezier(.2,.7,.2,1) forwards}
+html.js .hero .kicker.anim{animation-delay:.05s}
+html.js .hero h1.anim{animation-delay:.16s}
+html.js .hero p.anim{animation-delay:.32s}
+html.js .hero-cta.anim{animation-delay:.46s}
+html.js .hero-by.anim{animation-delay:.58s}
+html.js .hero .panel{opacity:0;animation:panelIn .9s cubic-bezier(.2,.7,.2,1) .42s forwards}
+html.js .hero .prow{opacity:0;animation:heroUp .7s cubic-bezier(.2,.7,.2,1) forwards}
+html.js .hero .prow:nth-child(2){animation-delay:.74s}
+html.js .hero .prow:nth-child(3){animation-delay:.86s}
+html.js .hero-glow{opacity:0;animation:glowIn 1.4s ease forwards .1s}
+.hero .live{animation:livePulse 2.4s ease-in-out infinite}
+.hero h1 .a{position:relative}
+.hero h1 .a::after{content:"";position:absolute;left:0;bottom:2px;height:8px;width:100%;background:rgba(63,155,230,.22);border-radius:2px;transform:scaleX(1);transform-origin:left;z-index:-1}
+html.js .hero h1 .a::after{transform:scaleX(0);animation:hlSweep .7s cubic-bezier(.2,.7,.2,1) 1s forwards}
+@keyframes hlSweep{to{transform:scaleX(1)}}
+/* safety net: if animations are throttled/disabled, force visible */
+html.anim-done .hero .anim,html.anim-done .hero .panel,html.anim-done .hero .prow,html.anim-done .hero-glow{opacity:1 !important;animation:none !important}
+html.anim-done .hero h1 .a::after{transform:scaleX(1) !important}
+@media (prefers-reduced-motion:reduce){
+  html.js .hero .anim,html.js .hero .panel,html.js .hero .prow,html.js .hero-glow{opacity:1;animation:none}
+  html.js .hero h1 .a::after{transform:scaleX(1);animation:none}
+  .hero .live{animation:none}
+  html.js .hero-bg{animation:none}
+  html.js .hero-scan,html.js .hero-spark{animation:none;opacity:0}
+}
+</style>
+</head>
+<body>
+
+<header id="hdr">
+  <div class="wrap nav">
+    <a href="#top" class="brand"><img src="assets/dsl-icon.png" alt="" /><b>Device Security Lab</b></a>
+    <nav class="menu">
+      <a href="#about">運営者</a>
+      <a href="#mission">ビジョン</a>
+      <a href="#activities">取り組み</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-label="メニュー">≡</button>
+  </div>
+</header>
+
+<div id="top"></div>
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-scan"></div>
+  <div class="hero-scan s2"></div>
+  <div class="hero-spark k1"></div>
+  <div class="hero-spark k2"></div>
+  <div class="hero-spark k3"></div>
+  <div class="hero-glow"></div>
+  <div class="wrap hero-grid">
+    <div>
+      <span class="kicker anim">Device Security Lab</span>
+      <h1 class="anim"><span class="l">デバイスのセキュリティを、</span><span class="l"><span class="a">もっと身近に</span></span></h1>
+      <p class="anim">専門用語が多く、とっつきにくいデバイスセキュリティ。その「いま」を、誰でもわかる言葉でひもとく——毎日のニュース発信とツールづくりで、デバイスの安全を身近にします。</p>
+      <div class="hero-cta anim">
+        <a class="btn btn-blue" href="#about">運営者について</a>
+        <a class="btn btn-line" href="#activities">取り組みを見る</a>
+      </div>
+      <div class="hero-by anim">個人での活動 — INDEPENDENT</div>
+    </div>
+    <div class="panel">
+      <div class="panel-h">
+        <span class="pl"><img src="assets/dsl-icon.png" alt="" />Device Security Lab</span>
+        <span class="live">● ACTIVE</span>
+      </div>
+      <div class="prow">
+        <span class="pi b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v5c0 4.4-3 8.4-7 9-4-1.6-7-4.6-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span>
+        <span class="pt"><b>SBON</b><span>SBOM 確認ツール</span></span>
+        <span class="pstat on">稼働中</span>
+      </div>
+      <div class="prow">
+        <span class="pi r"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1.6" fill="currentColor" stroke="none"/></svg></span>
+        <span class="pt"><b>Daily News</b><span>毎日のニュース速報</span></span>
+        <span class="pstat up">毎日更新</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT (先頭の主役) -->
+<section class="block" id="about">
+  <div class="wrap">
+    <span class="kicker">About</span>
+    <h2 class="title">運営者について</h2>
+    <div class="about">
+      <div class="about-copy reveal">
+        <p>Device Security Lab は、デバイス・組込みのサイバーセキュリティに、個人で取り組む活動です。</p>
+        <p>デバイス・組込みのセキュリティは、IT の世界に比べてまだ遅れを取っています。関わる人も、語られる言葉も、まだまだ足りていません。</p>
+        <p>だから、<strong>専門性の高いテーマを、現場で判断できる言葉に翻訳する</strong>こと。そして、手を動かせるツールとして形にすること。その積み重ねが、この分野に関わる人を増やし、やがて一般に広げていくと信じています。その姿勢は、毎日のニュース発信から、SBOM 確認ツール「SBON」の開発まで、すべての取り組みに通じています。</p>
+      </div>
+      <div class="about-card reveal">
+        <div class="bd"><img src="assets/dsl-icon.png" alt="" /><div><b>Device Security Lab</b><span>INDEPENDENT</span></div></div>
+        <dl class="dl">
+          <dt>名称</dt><dd>Device Security Lab</dd>
+          <dt>形態</dt><dd>個人での活動</dd>
+          <dt>領域</dt><dd>組込み・デバイスセキュリティ</dd>
+          <dt>取り組み</dt><dd>ツール開発 / 毎日のニュース発信</dd>
+          <dt>発信</dt><dd>YouTube・note にて毎日更新</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="mission" id="mission">
+      <span class="kicker">Our Vision</span>
+      <h3 class="vh">遅れているデバイスセキュリティを、<br><span class="a">深めて、広げる</span></h3>
+      <p>専門として取り組む人を増やし、その知見を一般にも広げていく。「深めて、広げる」ことで、この分野全体の底上げを目指します。SBON はその第一歩です。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ACTIVITIES -->
+<section class="block alt" id="activities">
+  <div class="wrap">
+    <span class="kicker">Activities</span>
+    <h2 class="title">取り組み</h2>
+    <p class="lead">「深めて、広げる」を進める、いまの2つの取り組み。SBON はそれを支えるツールの一つです。</p>
+    <div class="acts">
+      <div class="act reveal">
+        <div class="at">
+          <span class="ai b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v5c0 4.4-3 8.4-7 9-4-1.6-7-4.6-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span>
+          <span class="tagn">PRODUCT</span>
+        </div>
+        <h3>SBON — エスボン</h3>
+        <span class="role">SBOM 確認ツール</span>
+        <p>SBOM に含まれる OSS 部品を日本語で解説し、確認すべき優先度を整理。専門知識がなくても、デバイスに使われている部品の安全と向き合えます。「誰もが使える」を体現する最初のプロダクトです。</p>
+        <div class="links">
+          <a href="https://sbon-lp.osamusic.org/" target="_blank" rel="noopener">製品サイト →</a>
+          <a href="https://sbon.osamusic.org/" target="_blank" rel="noopener">サンプルで試す</a>
+        </div>
+      </div>
+      <div class="act reveal">
+        <div class="at">
+          <span class="ai r"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1.6" fill="currentColor" stroke="none"/></svg></span>
+          <span class="tagn">DAILY NEWS</span>
+        </div>
+        <h3>毎日のニュース速報</h3>
+        <span class="role" style="color:var(--red)">YouTube / note</span>
+        <p>デバイス・組込みセキュリティ関連のニュースを、毎日ピックアップして速報でお届け。難しい話題も、短く・わかりやすく。知識のきっかけを、毎日のかたちで届けています。</p>
+        <div class="chan">
+          <a href="https://www.youtube.com/@DeviceSecurityLab" target="_blank" rel="noopener">
+            <span class="yt"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.5a3 3 0 0 0-2.1-2.1C19 5 12 5 12 5s-7 0-8.9.4A3 3 0 0 0 1 7.5 31 31 0 0 0 .7 12 31 31 0 0 0 1 16.5a3 3 0 0 0 2.1 2.1C5 19 12 19 12 19s7 0 8.9-.4a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .3-4.5 31 31 0 0 0-.3-4.5ZM9.7 15.3V8.7l5.7 3.3Z"/></svg></span>
+            <div><b>YouTube</b><span>@DeviceSecurityLab</span></div>
+          </a>
+          <a href="https://note.com/devseclab" target="_blank" rel="noopener">
+            <span class="nt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h11l3 3v13H5z"/><path d="M9 9h6M9 13h6"/></svg></span>
+            <div><b>note</b><span>@devseclab</span></div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <a href="#top" class="brand"><img src="assets/dsl-icon.png" alt="" /><b>Device Security Lab</b></a>
+      <nav class="foot-links">
+        <a href="#about">運営者</a>
+        <a href="#mission">ビジョン</a>
+        <a href="https://sbon-lp.osamusic.org/" target="_blank" rel="noopener">SBON</a>
+        <a href="https://www.youtube.com/@DeviceSecurityLab" target="_blank" rel="noopener">YouTube</a>
+        <a href="https://note.com/devseclab" target="_blank" rel="noopener">note</a>
+      </nav>
+    </div>
+    <div class="copy">© 2026 Device Security Lab</div>
+  </div>
+</footer>
+
+<script>
+const hdr=document.getElementById('hdr');
+const onScroll=()=>hdr.classList.toggle('scrolled',window.scrollY>16);
+onScroll();addEventListener('scroll',onScroll,{passive:true});
+const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.14,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%2*70)+'ms';io.observe(el)});
+document.getElementById('menuBtn').addEventListener('click',()=>document.getElementById('about').scrollIntoView());
+// safety net: guarantee hero is visible even if entrance animations are throttled
+setTimeout(()=>document.documentElement.classList.add('anim-done'),2200);
+</script>
+</body>
+</html>
