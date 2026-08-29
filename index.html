@@ -7,8 +7,8 @@
 <script>document.documentElement.className="js";</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Device Security Lab — デバイスセキュリティを、もっと身近に</title>
-<meta name="description" content="Device Security Lab は、組込み・デバイスのサイバーセキュリティに個人で取り組む活動です。SBOM 確認ツール「SBON」や 3D 脅威モデリングツール「ThreatCube」の開発と、毎日のセキュリティニュース発信を通じて、デバイスの安全を誰もが扱えるかたちにします。" />
-<meta name="keywords" content="デバイスセキュリティ,組込みセキュリティ,SBOM,SBON,脅威モデリング,STRIDE,ThreatCube,IoTセキュリティ,サイバーセキュリティ,Device Security Lab" />
+<meta name="description" content="Device Security Lab は、組込み・デバイスのサイバーセキュリティに個人で取り組む活動です。SBOM 確認ツール「SBON」の開発と、毎日のセキュリティニュース発信を通じて、デバイスの安全を誰もが扱えるかたちにします。" />
+<meta name="keywords" content="デバイスセキュリティ,組込みセキュリティ,SBOM,SBON,IoTセキュリティ,サイバーセキュリティ,Device Security Lab" />
 <meta name="author" content="Device Security Lab" />
 <meta name="robots" content="index,follow" />
 <meta name="theme-color" content="#0c0f14" />
@@ -18,7 +18,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Device Security Lab" />
 <meta property="og:title" content="Device Security Lab — デバイスセキュリティを、もっと身近に" />
-<meta property="og:description" content="組込み・デバイスのサイバーセキュリティに個人で取り組む活動。SBOM 確認ツール「SBON」や 3D 脅威モデリングツール「ThreatCube」の開発と、毎日のセキュリティニュース発信。" />
+<meta property="og:description" content="組込み・デバイスのサイバーセキュリティに個人で取り組む活動。SBOM 確認ツール「SBON」の開発と、毎日のセキュリティニュース発信。" />
 <meta property="og:url" content="https://osamusic.org/" />
 <meta property="og:image" content="https://osamusic.org/assets/dsl-icon.png" />
 <meta property="og:image:alt" content="Device Security Lab ロゴ" />
@@ -27,7 +27,7 @@
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="Device Security Lab — デバイスセキュリティを、もっと身近に" />
-<meta name="twitter:description" content="組込み・デバイスのサイバーセキュリティに個人で取り組む活動。SBOM 確認ツール「SBON」や 3D 脅威モデリングツール「ThreatCube」の開発と、毎日のセキュリティニュース発信。" />
+<meta name="twitter:description" content="組込み・デバイスのサイバーセキュリティに個人で取り組む活動。SBOM 確認ツール「SBON」の開発と、毎日のセキュリティニュース発信。" />
 <meta name="twitter:image" content="https://osamusic.org/assets/dsl-icon.png" />
 
 <!-- Icons -->
@@ -163,7 +163,7 @@ section.block{padding:84px 0}
 .mission p{color:var(--muted);font-size:15px;margin-top:18px;max-width:54ch;margin-inline:auto}
 
 /* activities */
-.acts{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:40px}
 .act{border:1px solid var(--line);border-radius:14px;background:var(--card);padding:30px;display:flex;flex-direction:column;transition:.2s}
 .act:hover{border-color:var(--line-2);transform:translateY(-3px)}
 .act .at{display:flex;align-items:center;justify-content:space-between}
@@ -235,7 +235,6 @@ html.js .hero .panel{opacity:0;animation:panelIn .9s cubic-bezier(.2,.7,.2,1) .4
 html.js .hero .prow{opacity:0;animation:heroUp .7s cubic-bezier(.2,.7,.2,1) forwards}
 html.js .hero .prow:nth-child(2){animation-delay:.74s}
 html.js .hero .prow:nth-child(3){animation-delay:.86s}
-html.js .hero .prow:nth-child(4){animation-delay:.98s}
 html.js .hero-glow{opacity:0;animation:glowIn 1.4s ease forwards .1s}
 .hero .live{animation:livePulse 2.4s ease-in-out infinite}
 .hero h1 .a{position:relative}
@@ -262,7 +261,7 @@ html.anim-done .hero h1 .a::after{transform:scaleX(1) !important}
       "@id": "https://osamusic.org/#website",
       "url": "https://osamusic.org/",
       "name": "Device Security Lab",
-      "description": "組込み・デバイスのサイバーセキュリティに個人で取り組む活動。SBOM 確認ツール「SBON」や 3D 脅威モデリングツール「ThreatCube」の開発と、毎日のセキュリティニュース発信。",
+      "description": "組込み・デバイスのサイバーセキュリティに個人で取り組む活動。SBOM 確認ツール「SBON」の開発と、毎日のセキュリティニュース発信。",
       "inLanguage": "ja",
       "publisher": { "@id": "https://osamusic.org/#org" }
     },
@@ -328,11 +327,6 @@ html.anim-done .hero h1 .a::after{transform:scaleX(1) !important}
         <span class="pstat on">稼働中</span>
       </div>
       <div class="prow">
-        <span class="pi b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2.5l8 4.5v9l-8 4.5-8-4.5v-9z"/><path d="M4 7l8 4.5 8-4.5"/><path d="M12 11.5v9"/></svg></span>
-        <span class="pt"><b>ThreatCube</b><span>3D 脅威モデリング</span></span>
-        <span class="pstat on">稼働中</span>
-      </div>
-      <div class="prow">
         <span class="pi r"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1.6" fill="currentColor" stroke="none"/></svg></span>
         <span class="pt"><b>Daily News</b><span>毎日のニュース速報</span></span>
         <span class="pstat up">毎日更新</span>
@@ -377,7 +371,7 @@ html.anim-done .hero h1 .a::after{transform:scaleX(1) !important}
   <div class="wrap">
     <span class="kicker">Activities</span>
     <h2 class="title">取り組み</h2>
-    <p class="lead">「深めて、広げる」を進める、いまの取り組み。SBON と ThreatCube の2つのツール、そして毎日のニュース発信です。</p>
+    <p class="lead">「深めて、広げる」を進める、いまの2つの取り組み。SBON はそれを支えるツールの一つです。</p>
     <div class="acts">
       <div class="act reveal">
         <div class="at">
@@ -390,19 +384,6 @@ html.anim-done .hero h1 .a::after{transform:scaleX(1) !important}
         <div class="links">
           <a href="https://sbon-lp.osamusic.org/" target="_blank" rel="noopener">製品サイト →</a>
           <a href="https://sbon.osamusic.org/" target="_blank" rel="noopener">サンプルで試す</a>
-        </div>
-      </div>
-      <div class="act reveal">
-        <div class="at">
-          <span class="ai b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2.5l8 4.5v9l-8 4.5-8-4.5v-9z"/><path d="M4 7l8 4.5 8-4.5"/><path d="M12 11.5v9"/></svg></span>
-          <span class="tagn">PRODUCT</span>
-        </div>
-        <h3>ThreatCube — スレットキューブ</h3>
-        <span class="role">3D 脅威モデリングツール</span>
-        <p>STRIDE 脅威分析を Asset × Interface の立体に可視化。Excel では見えない脅威の偏りや抜け漏れを、3D で直感的に捉えられます。ブラウザだけで動き、データは手元（IndexedDB）に残ります。</p>
-        <div class="links">
-          <a href="https://cube-lp.osamusic.org/" target="_blank" rel="noopener">製品サイト →</a>
-          <a href="https://cube.osamusic.org/" target="_blank" rel="noopener">使ってみる</a>
         </div>
       </div>
       <div class="act reveal">
@@ -433,7 +414,7 @@ html.anim-done .hero h1 .a::after{transform:scaleX(1) !important}
   <div class="wrap">
     <span class="kicker" style="display:block">Contact</span>
     <h2>お問い合わせ</h2>
-    <p>ツールやニュース、活動に関するご質問・ご連絡はこちらから。SBON・ThreatCube のフィードバックも歓迎です。</p>
+    <p>ツールやニュース、活動に関するご質問・ご連絡はこちらから。SBON のフィードバックも歓迎です。</p>
     <form class="cform reveal" action="https://api.staticforms.dev/submit" method="POST">
       <input type="hidden" name="apiKey" value="sf_4b4897246007ed0c77710d60" />
       <input type="hidden" name="subject" value="Device Security Lab submission" />
@@ -466,7 +447,6 @@ html.anim-done .hero h1 .a::after{transform:scaleX(1) !important}
         <a href="#mission">ビジョン</a>
         <a href="#contact">お問い合わせ</a>
         <a href="https://sbon-lp.osamusic.org/" target="_blank" rel="noopener">SBON</a>
-        <a href="https://cube-lp.osamusic.org/" target="_blank" rel="noopener">ThreatCube</a>
         <a href="https://www.youtube.com/@DeviceSecurityLab" target="_blank" rel="noopener">YouTube</a>
         <a href="https://note.com/devseclab" target="_blank" rel="noopener">note</a>
       </nav>
